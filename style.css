@@ -113,8 +113,9 @@ h6:not(a) {
     color: var(--headercolor);
 }
 
+
 /* "paragraph font" that affects all but headers */
-*:not(select) {
+*:not(h1, h2, h3, h4, h5, h6) {
     font-family: var(--paragraphfont);
     text-align: var(--paragraphalign);
 }
