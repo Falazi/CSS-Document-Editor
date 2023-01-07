@@ -1,0 +1,154 @@
+:root {
+    --headerfont: Arial;
+    --paragraphfont: Arial;
+
+    /* options: left, center, right, justified */
+    --headeralign: left;
+    /* options: left, center, right, justified */
+    --paragraphalign: left;
+
+    /* need to think about how to show the color selection to the user */
+    --headercolor: black;
+    --paragraphcolor: black;
+    --imagealign: left;
+
+    /* px or rem */
+    --imagemaxsize: 250px;
+
+    --paragraphfontsize: 20px;
+
+}
+
+
+
+
+/* calculate line height
+* {
+    line-height: calc(1em + 0.5rem);
+
+}
+*/
+
+
+/* table styling */
+table {
+    width: 100%;
+    background-color: #FFFFFF;
+    border-collapse: collapse;
+    border-width: 2px;
+    border-color: #576174;
+    border-style: solid;
+    color: #000000;
+}
+
+table td,
+table th {
+    border-width: 2px;
+    border-color: #7AA2F0;
+    border-style: solid;
+    padding: 5px;
+}
+
+table thead {
+    background-color: #7EA8F8;
+}
+
+
+
+/* set line-height to 1.5 on all elements except headeres */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    line-height: 1.2;
+}
+
+body:not(h1, h2, h3, h4, h5, h6) {
+    line-height: 1.5;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    font-family: var(--headerfont);
+    text-align: var(--headeralign);
+}
+
+
+/* header font sizes */
+h1 {
+    font-size: 2rem;
+}
+
+h2 {
+    font-size: 1.5rem;
+}
+
+h4 {
+    font-size: 1rem;
+}
+
+h5 {
+    font-size: .83rem;
+}
+
+h6 {
+    font-size: .67rem;
+}
+
+
+
+/* change color except a links */
+h1:not(a),
+h2:not(a),
+h3:not(a),
+h4:not(a),
+h5:not(a),
+h6:not(a) {
+    color: var(--headercolor);
+}
+
+/* "paragraph font" that affects all but headers */
+*:not(select) {
+    font-family: var(--paragraphfont);
+    text-align: var(--paragraphalign);
+}
+
+*:not(a) {
+    color: var(--paragraphcolor);
+
+}
+
+/* paragraph font size */
+p,
+ol,
+li,
+label,
+b,
+em,
+a,
+figcaption {
+    font-size: var(--paragraphfontsize) !important;
+    /*  color: red; */
+}
+
+
+/* a fake "body" */
+#container {
+    max-width: 70rem;
+    margin: 0 auto;
+    padding: 1rem;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    float: var(--imagealign);
+    max-width: var(--imagemaxsize)
+}

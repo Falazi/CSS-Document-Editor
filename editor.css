@@ -1,0 +1,34 @@
+#two {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+}
+
+#editor {
+    background-color: lightgrey;
+    padding: 1rem;
+    height: 100vh;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+html {
+    height: 100%;
+}
+
+#editor>* {
+    text-align: left;
+}
+
+#editor>* {
+    text-align: left;
+}
+
+input,
+button,
+textarea,
+select {
+    font: inherit;
+}
+
+label {
+    display: block
+}
