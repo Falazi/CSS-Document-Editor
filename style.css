@@ -17,9 +17,14 @@
 
     --paragraphfontsize: 20px;
 
+    --imagefloat: center;
+
 }
 
-
+img {
+    max-width: 100%;
+    height: auto;
+}
 
 
 /* calculate line height
@@ -148,8 +153,20 @@ figcaption {
 
 img {
     display: block;
-    margin-left: auto;
+    text-align: var(--imagealign);
+    max-width: var(--imagemaxsize);
     margin-right: auto;
-    float: var(--imagealign);
-    max-width: var(--imagemaxsize)
+    margin-left: auto;
+    float: var(--imagefloat);
+}
+
+.Left {
+    margin-right: auto;
+    margin-left: 0
+}
+
+
+.Right {
+    margin-right: 0;
+    margin-left: auto
 }

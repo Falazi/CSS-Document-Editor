@@ -46,3 +46,28 @@ select {
 #--imagemaxsize {
     width: 5rem;
 }
+
+.align-icon {
+    display: flex;
+    align-items: flex-end;
+    padding-bottom: 1rem;
+}
+
+#editor>.align-icon>span {
+    display: block;
+    padding-left: 0.5rem;
+}
+
+.icons {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    justify-content: flex-start;
+    align-items: stretch;
+    align-content: stretch;
+}
+
+
+.icons>div>svg {
+    margin-right: 2rem;
+}

@@ -26,6 +26,73 @@ function changevar(variable, newval) {
     r.style.setProperty(variable, newval);
 }
 
+//removes class from element if its in a list
+function removeClass(element, classNames) {
+    classNames.forEach(className => {
+        if (element.classList.contains(className)) {
+            element.classList.remove(className);
+        }
+    });
+}
+
+
+function changeclass(event) {
+
+
+    // the select element
+    var selectElement = event.target;
+
+    // the id of it
+    var selectElid = event.target.id;
+
+    console.log("this is:" + selectElid)
+
+    // the value of the selection
+    var value = selectElement.value;
+    const para = document.querySelectorAll('img');
+
+    var images = document.getElementsByTagName("img");
+    console.log(images)
+
+
+    para.forEach(el => {
+
+        function removefrom(id, list) {
+            if (selectElid === id) {
+                removeClass(el, list)
+            }
+
+        }
+
+
+        removefrom("--imagealign", ["Left", "Right", "Center"])
+
+        // if (selectElid === "--imagealign") {
+        //     removeClass(el, ["Left-class", "Right-class", "Center-class"])
+        // }
+
+
+        el.classList.toggle(`${value}`);
+    })
+
+}
+
+function addchoiceclass(label, variable, ...others) {
+    var choices = ""
+    for (let val of others) {
+        choices += `<option value="${val}">${val}</option>`
+    }
+
+    add(
+        ` <label for="${label}">${label}:</label>
+
+    <select name="${label}" id="${variable}" onchange="changeclass(event)">
+        ${choices}
+    </select> <br>`
+
+
+    )
+}
 
 
 function add(htmlstring) {
@@ -60,7 +127,8 @@ function addchoicetext(label, variable, inputtype, defaulttext) {
         ` <label for="${variable}">${label}:</label>
 
       <input type="${inputtype}" min="0" step="10" value="${defaulttext}"  id="${variable}" oninput="textchange(this.value, this.id)"><span style="margin-left:10px;">px</span>
-    `
+    <br>
+      `
 
 
     )
@@ -142,8 +210,16 @@ create("h2", "Image", "#editor")
 
 
 // these options are experimentals
-addchoice("Image Alignment", "--imagealign", "Left", "Center", "Right")
+
+addchoiceclass("Image Alignment", "--imagealign", "Left", "Center", "Right")
 
 changedefaultop("#--imagealign", "Center")
 
+
 addchoicetext("Image Max Size", "--imagemaxsize", "number", "500")
+
+
+
+
+addchoice("Image Float", "--imagefloat", "Left", "None", "Right")
+changedefaultop("#--imagefloat", "None")
