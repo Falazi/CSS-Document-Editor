@@ -10,10 +10,10 @@
     /* need to think about how to show the color selection to the user */
     --headercolor: black;
     --paragraphcolor: black;
-    --imagealign: left;
+    --imagealign: center;
 
     /* px or rem */
-    --imagemaxsize: 250px;
+    --imagemaxsize: 500px;
 
     --paragraphfontsize: 20px;
 
@@ -115,7 +115,7 @@ h6:not(a) {
 
 
 /* "paragraph font" that affects all but headers */
-*:not(h1, h2, h3, h4, h5, h6) {
+#container {
     font-family: var(--paragraphfont);
     text-align: var(--paragraphalign);
 }

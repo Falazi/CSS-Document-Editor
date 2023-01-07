@@ -1,4 +1,5 @@
 
+
 function create(el, text, appendto) {
     const para = document.createElement(el);
     const node = document.createTextNode(text);
@@ -41,12 +42,30 @@ function addchoice(label, variable, ...others) {
         ` <label for="${label}">${label}:</label>
 
     <select name="${label}" id="${variable}" onchange="handleSelectChange(event)">
-      ${choices}
-    </select> `
+        ${choices}
+    </select> <br>`
 
 
     )
 }
+
+function textchange(text, id) {
+    changevar(id, text + "px")
+}
+
+// add text box choice
+function addchoicetext(label, variable, inputtype, defaulttext) {
+
+    add(
+        ` <label for="${variable}">${label}:</label>
+
+      <input type="${inputtype}" min="0" step="10" value="${defaulttext}"  id="${variable}" oninput="textchange(this.value, this.id)"><span style="margin-left:10px;">px</span>
+    `
+
+
+    )
+}
+
 
 // like the addchoice function but it shows the options in their actual font
 function addchoicefont(label, variable, ...others) {
@@ -57,10 +76,9 @@ function addchoicefont(label, variable, ...others) {
 
     add(
         ` <label for="${label}">${label}:</label>
-
-    <select name="${label}" id="${variable}" onchange="handleSelectChange(event)">
-      ${choices}
-    </select> `
+        <select name="${label}" id="${variable}" onchange="handleSelectChange(event)">
+            ${choices}
+        </select> <br>`
 
 
     )
@@ -76,6 +94,11 @@ function getOption(el) {
 
 }
 // changevar("--headerfont", "Arial")
+
+// change default selected option in a select box
+function changedefaultop(selectid, option) {
+    document.querySelector(selectid).value = option;
+}
 
 function handleSelectChange(event) {
 
@@ -100,19 +123,27 @@ function handleSelectChange(event) {
 }
 
 const fonts = ["Arial", "Times New Roman", "Georgia"]
-create("h2", "Header Options", "#editor")
+
+create("h2", "Header", "#editor")
 
 addchoicefont("Header Font", "--headerfont", ...fonts)
-
 
 addchoice("Header Alignment", "--headeralign", "Left", "Center", "Right")
 
 
-create("h2", "Paragraph Options", "#editor")
+create("h2", "Paragraph", "#editor")
 
 
 addchoicefont("Paragraph Font", "--paragraphfont", ...fonts)
 
 addchoice("Paragraph Alignment", "--paragraphalign", "Left", "Center", "Right", "Justify")
 
+create("h2", "Image", "#editor")
 
+
+// these options are experimentals
+addchoice("Image Alignment", "--imagealign", "Left", "Center", "Right")
+
+changedefaultop("#--imagealign", "Center")
+
+addchoicetext("Image Max Size", "--imagemaxsize", "number", "500")
