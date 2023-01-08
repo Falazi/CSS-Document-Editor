@@ -10,6 +10,7 @@
   <link rel='stylesheet' href='style.css'>
 
   <link rel='stylesheet' href='editor.css'>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js" defer></script>
   <script src='script.js' defer></script>
 
 
@@ -62,11 +63,12 @@
 
 
       <div class="icons">
+        <input type="file" id="file-input" style="display: none;">
 
         <!-- Can open html or markdown to import it. -->
         <!-- css can be opened too and can replace the style.css file -->
         <div title="Open File">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+          <svg id="open-html" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
             stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path
               d="m6 14 1.45-2.9A2 2 0 0 1 9.24 10H20a2 2 0 0 1 1.94 2.5l-1.55 6a2 2 0 0 1-1.94 1.5H4a2 2 0 0 1-2-2V5c0-1.1.9-2 2-2h3.93a2 2 0 0 1 1.66.9l.82 1.2a2 2 0 0 0 1.66.9H18a2 2 0 0 1 2 2v2">
@@ -85,8 +87,9 @@
         </div>
 
         <div title="Export to HTML">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+
+          <svg id="export-html" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24"
+            fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
             <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"></path>
             <polyline points="14 2 14 8 20 8"></polyline>
             <path d="M12 18v-6"></path>

@@ -32,6 +32,10 @@ html {
     text-align: left;
 }
 
+#editor {
+    line-height: 1.5;
+}
+
 input,
 button,
 textarea,
@@ -43,7 +47,7 @@ select {
     text-align: right;
 }
 
-#--imagemaxsize {
+input[type="number"] {
     width: 5rem;
 }
 

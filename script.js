@@ -36,14 +36,16 @@ function removeClass(element, classNames) {
 }
 
 
-function changeclass(event) {
-
-
+function changeclass(event, others) {
+    //console.log(typeof (others))
+    var choices = others.split(",")
     // the select element
     var selectElement = event.target;
 
+
     // the id of it
     var selectElid = event.target.id;
+
 
     console.log("this is:" + selectElid)
 
@@ -65,7 +67,7 @@ function changeclass(event) {
         }
 
 
-        removefrom("--imagealign", ["Left", "Right", "Center"])
+        removefrom(selectElid, choices)
 
         // if (selectElid === "--imagealign") {
         //     removeClass(el, ["Left-class", "Right-class", "Center-class"])
@@ -82,11 +84,29 @@ function addchoiceclass(label, variable, ...others) {
     for (let val of others) {
         choices += `<option value="${val}">${val}</option>`
     }
-
+    //console.log(others)
     add(
         ` <label for="${label}">${label}:</label>
 
-    <select name="${label}" id="${variable}" onchange="changeclass(event)">
+    <select name="${label}" id="${variable}" onchange="changeclass(event, '${others}') ">
+        ${choices}
+    </select > <br>`
+
+
+    )
+}
+
+function addchoicedifname(label, variable, options) {
+    // options is an array of objects, each with a 'label' and 'value' property
+    var choices = ""
+    for (let option of options) {
+        choices += `<option value="${option.value}">${option.label}</option>`
+    }
+
+    add(
+        ` <label for="${label}">${label}:</label>
+  
+    <select name="${label}" id="${variable}" onchange="handleSelectChange(event)">
         ${choices}
     </select> <br>`
 
@@ -116,23 +136,36 @@ function addchoice(label, variable, ...others) {
     )
 }
 
-function textchange(text, id) {
-    changevar(id, text + "px")
+function textchange(text, id, unit, fakepx) {
+    if (fakepx == "true") {
+        text = text * 0.0625;
+        console.log(id, text, "rem")
+        changevar(id, text + "rem")
+    }
+    else {
+
+        changevar(id, text + unit)
+
+    }
 }
 
+
 // add text box choice
-function addchoicetext(label, variable, inputtype, defaulttext) {
+function addchoicetext(label, variable, inputtype, defaulttext, step, unit, fakepx) {
+
+
 
     add(
         ` <label for="${variable}">${label}:</label>
 
-      <input type="${inputtype}" min="0" step="10" value="${defaulttext}"  id="${variable}" oninput="textchange(this.value, this.id)"><span style="margin-left:10px;">px</span>
+      <input type="${inputtype}" min="0" step="${step}" value="${defaulttext}"  id="${variable}" oninput="textchange(this.value, this.id, '${unit}','${fakepx}')"><span style="margin-left:10px;">${unit}</span>
     <br>
       `
 
 
     )
 }
+
 
 
 // like the addchoice function but it shows the options in their actual font
@@ -164,9 +197,35 @@ function getOption(el) {
 // changevar("--headerfont", "Arial")
 
 // change default selected option in a select box
-function changedefaultop(selectid, option) {
-    document.querySelector(selectid).value = option;
+// old ver
+// function changedefaultop(selectid, option) {
+//     document.querySelector(selectid).value = option;
+// }
+
+function changedefaultop(selectid, optionLabel) {
+    // get the select element with the specified id
+    var selectElement = document.querySelector(selectid);
+
+    // remove the "#" prefix from the selectid variable
+    var variable = selectid.substring(1);
+
+    // loop through the options of the select element
+    selectElement.querySelectorAll('option').forEach(function (option) {
+        // if the option label matches the specified option label, set it as the default selection
+        if (option.text == optionLabel) {
+            // get the value of the option
+            var value = option.value;
+
+            // set the selected index of the select element
+            selectElement.selectedIndex = option.index;
+
+            // update the CSS variable
+            changevar(variable, value);
+        }
+    });
 }
+
+
 
 function handleSelectChange(event) {
 
@@ -187,6 +246,7 @@ function handleSelectChange(event) {
     // like el Dude has suggested
     console.log(selectElement.id)
     // do whatever you want with value
+    console.log(selectElid)
     changevar(selectElid, value)
 }
 
@@ -206,20 +266,148 @@ addchoicefont("Paragraph Font", "--paragraphfont", ...fonts)
 
 addchoice("Paragraph Alignment", "--paragraphalign", "Left", "Center", "Right", "Justify")
 
+addchoicetext("Line Height", "--lineheight", "number", "1.5", "0.1", "")
+
+
 create("h2", "Image", "#editor")
 
 
 // these options are experimentals
 
-addchoiceclass("Image Alignment", "--imagealign", "Left", "Center", "Right")
+//addchoiceclass("Image Alignment", "--imagealign", "Left", "Center", "Right")
+
+//changedefaultop("#--imagealign", "Center")
+
+
+addchoicedifname('Image Alignment', '--imagealign', [
+    { label: 'Left', value: 'auto auto 0 0' },
+    { label: 'Center', value: 'auto auto' },
+    { label: 'Right', value: '0 0 auto auto' }
+]);
 
 changedefaultop("#--imagealign", "Center")
 
 
-addchoicetext("Image Max Size", "--imagemaxsize", "number", "500")
-
-
+addchoicetext("Image Max Size", "--imagemaxsize", "number", "500", "10", "px", "true")
 
 
 addchoice("Image Float", "--imagefloat", "Left", "None", "Right")
 changedefaultop("#--imagefloat", "None")
+
+
+create("h2", "Page", "#editor")
+
+addchoicetext("Page Width", "--width", "number", "1100", "25", "px", "true")
+
+
+// create a function to trigger the file dialog with an icon
+function triggerFileDialog(iconId, inputId, fileTypes) {
+    // get the icon element
+    var icon = document.getElementById(iconId);
+
+    // get the input element
+    var input = document.getElementById(inputId);
+
+    // add a click event listener to the icon
+    icon.addEventListener('click', function () {
+        // set the accept attribute of the input element to the specified file types
+        input.setAttribute('accept', fileTypes);
+
+        // trigger the click event on the input element
+        input.click();
+    });
+}
+
+function openhtmlormd() {
+    // call the function
+    triggerFileDialog('open-html', 'file-input', '.html, .md');
+
+    // get the file content div element
+    var fileContent = document.getElementById('container');
+
+
+    // add a change event listener to the input element
+    document.getElementById('file-input').addEventListener('change', function () {
+        // get the selected file
+        var file = this.files[0];
+
+        // create a new FileReader
+        var reader = new FileReader();
+
+        // add a load event listener to the FileReader
+        reader.addEventListener('load', function () {
+            // convert the markdown to HTML
+            var html = marked.parse(this.result);
+
+            // create a div element to contain the HTML
+            var container = document.createElement('div');
+            container.innerHTML = html;
+
+            // insert the div element into the file content div element
+            fileContent.innerHTML = '';
+            fileContent.appendChild(container);
+        });
+
+        // read the file as text
+        reader.readAsText(file);
+    });
+}
+
+openhtmlormd()
+
+
+// JavaScript
+// create a function to trigger the export when the icon is clicked
+function triggerExport(iconId, containerId) {
+    // get the icon element
+    var icon = document.getElementById(iconId);
+
+    // get the container element
+    var container = document.getElementById(containerId);
+
+    // add a click event listener to the icon
+    icon.addEventListener('click', function () {
+        // create a new XMLHttpRequest to get the CSS
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            // create a new Blob with the HTML content
+            var blob = new Blob([
+                // add the HTML boilerplate
+                '<!DOCTYPE html>\n' +
+                '<html>\n' +
+                '<head>\n' +
+                // add the style element with the CSS content
+                '  <style>\n' + this.responseText + '  </style>\n' +
+                '</head>\n' +
+                '<body>\n' +
+                // add the container element with the HTML content
+                container.outerHTML + '\n' +
+                '</body>\n' +
+                '</html>\n'
+            ], { type: 'text/html' });
+
+            // create a link element
+            var link = document.createElement('a');
+
+            // set the href and download attributes of the link element
+            link.href = URL.createObjectURL(blob);
+            link.download = 'export.html';
+
+            // append the link element to the document
+            document.body.appendChild(link);
+
+            // click the link element to trigger the download
+            link.click();
+
+            // remove the link element
+            document.body.removeChild(link);
+        };
+        xhr.open('GET', 'style.css');
+        xhr.send();
+    });
+}
+
+// call the function when the DOM is ready
+document.addEventListener('DOMContentLoaded', function () {
+    triggerExport('export-html', 'container');
+});

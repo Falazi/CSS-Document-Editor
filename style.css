@@ -18,7 +18,8 @@
     --paragraphfontsize: 20px;
 
     --imagefloat: center;
-
+    --lineheight: 1.5;
+    --width: 1100px;
 }
 
 img {
@@ -70,8 +71,8 @@ h6 {
     line-height: 1.2;
 }
 
-body:not(h1, h2, h3, h4, h5, h6) {
-    line-height: 1.5;
+body:not(h1, h2, h3, h4, h5, h6, #editor) {
+    line-height: var(--lineheight);
 }
 
 h1,
@@ -146,27 +147,14 @@ figcaption {
 
 /* a fake "body" */
 #container {
-    max-width: 70rem;
+    width: var(--width);
     margin: 0 auto;
     padding: 1rem;
 }
 
 img {
     display: block;
-    text-align: var(--imagealign);
     max-width: var(--imagemaxsize);
-    margin-right: auto;
-    margin-left: auto;
+    margin: var(--imagealign);
     float: var(--imagefloat);
-}
-
-.Left {
-    margin-right: auto;
-    margin-left: 0
-}
-
-
-.Right {
-    margin-right: 0;
-    margin-left: auto
 }
