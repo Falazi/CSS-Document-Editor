@@ -23,6 +23,7 @@ function myFunction_get() {
 // Create a function for setting a variable value
 function changevar(variable, newval) {
     // Set the value of variable --blue to another value (in this case "lightblue")
+    console.log(variable, newval)
     r.style.setProperty(variable, newval);
 }
 
@@ -241,6 +242,7 @@ function handleSelectChange(event) {
 
     // the value of the selection
     var value = selectElement.value;
+
     // to support really old browsers, you may use
     // selectElement.value || selectElement.options[selectElement.selectedIndex].value;
     // like el Dude has suggested
@@ -248,6 +250,7 @@ function handleSelectChange(event) {
     // do whatever you want with value
     console.log(selectElid)
     changevar(selectElid, value)
+    console.log(selectElid, `${value}`)
 }
 
 const fonts = ["Arial", "Times New Roman", "Georgia"]
@@ -285,7 +288,7 @@ addchoicedifname('Image Alignment', '--imagealign', [
     { label: 'Right', value: '0 0 auto auto' }
 ]);
 
-changedefaultop("#--imagealign", "Center")
+//changedefaultop("#--imagealign", "Center")
 
 
 addchoicetext("Image Max Size", "--imagemaxsize", "number", "500", "10", "px", "true")
@@ -403,6 +406,7 @@ function triggerExport(iconId, containerId) {
             document.body.removeChild(link);
         };
         xhr.open('GET', 'style.css');
+
         xhr.send();
     });
 }

@@ -10,8 +10,7 @@
     /* need to think about how to show the color selection to the user */
     --headercolor: black;
     --paragraphcolor: black;
-    --imagealign: center;
-
+    --imagealign: auto auto;
     /* px or rem */
     --imagemaxsize: 500px;
 
