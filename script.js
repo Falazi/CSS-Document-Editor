@@ -8,23 +8,25 @@ function create(el, text, appendto) {
     element.appendChild(para);
 }
 
-// Get the root element
-var r = document.querySelector(':root');
-
-// Create a function for getting a variable value
-function myFunction_get() {
-    // Get the styles (properties and values) for the root
-    var rs = getComputedStyle(r);
-    // Alert the value of the --blue variable
-    alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
-}
 
 
 // Create a function for setting a variable value
 function changevar(variable, newval) {
+    // Get the root element
+    let r = document.querySelector(':root');
+
+    // Create a function for getting a variable value
+    function myFunction_get() {
+        // Get the styles (properties and values) for the root
+        let rs = getComputedStyle(r);
+        // Alert the value of the --blue variable
+        alert("The value of --blue is: " + rs.getPropertyValue('--blue'));
+    }
+
     // Set the value of variable --blue to another value (in this case "lightblue")
     console.log(variable, newval)
     r.style.setProperty(variable, newval);
+
 }
 
 //removes class from element if its in a list
@@ -358,7 +360,17 @@ function openhtmlormd() {
 
 openhtmlormd()
 
+// list of css variables
+// remember to update this if you add any more variables to style.css
+var cssvars = ["--headerfont", "--paragraphfont",
+    "--headeralign", "--paragraphalign", "--headercolor",
+    "--paragraphcolor", "--imagealign", "--imagemaxsize",
+    "--paragraphfontsize", "--imagefloat", "--lineheight",
+    "--width"]
 
+
+// JavaScript
+// create a function to trigger the export when the icon is clicked
 // JavaScript
 // create a function to trigger the export when the icon is clicked
 function triggerExport(iconId, containerId) {
@@ -373,6 +385,40 @@ function triggerExport(iconId, containerId) {
         // create a new XMLHttpRequest to get the CSS
         var xhr = new XMLHttpRequest();
         xhr.onload = function () {
+            var css = this.responseText
+            let regex = /:root\s*\{[^]*?\}/;
+            //const regex = /(--[a-zA-Z]+):(.*[a-zA-Z]+);/gm;
+            //const result = str.replace(regex, subst);
+            var html = document.querySelector("html");
+            var htmlstyles = window.getComputedStyle(html);
+            console.log(htmlstyles)
+
+
+            // gets the styles of it
+            var style = getComputedStyle(document.body)
+
+            let root = document.documentElement;
+            let computedStyles = getComputedStyle(root);
+
+
+            var cssvalcol = ":root{\n"
+
+            //console.log(`This is the value of headerfont: ${cssval}`);
+
+            cssvars.forEach(cssvar => {
+                //var css = css.replace(regex, subst);
+                var cssval = computedStyles.getPropertyValue(cssvar);
+
+                cssvalcol += `${cssvar}:${cssval};\n`
+                // console.log(cssvar, style.getPropertyValue(cssvar))
+            });
+
+            cssvalcol += "}"
+
+            //            console.log(cssvalcol)
+            var css = css.replace(regex, cssvalcol);
+
+
             // create a new Blob with the HTML content
             var blob = new Blob([
                 // add the HTML boilerplate
@@ -380,7 +426,7 @@ function triggerExport(iconId, containerId) {
                 '<html>\n' +
                 '<head>\n' +
                 // add the style element with the CSS content
-                '  <style>\n' + this.responseText + '  </style>\n' +
+                '  <style>\n' + css + '  </style>\n' +
                 '</head>\n' +
                 '<body>\n' +
                 // add the container element with the HTML content
@@ -411,7 +457,81 @@ function triggerExport(iconId, containerId) {
     });
 }
 
+function exportcss(iconId, containerId) {
+    // get the icon element
+    var icon = document.getElementById(iconId);
+
+    // get the container element
+    var container = document.getElementById(containerId);
+
+    // add a click event listener to the icon
+    icon.addEventListener('click', function () {
+        // create a new XMLHttpRequest to get the CSS
+        var xhr = new XMLHttpRequest();
+        xhr.onload = function () {
+            var css = this.responseText
+            let regex = /:root\s*\{[^]*?\}/;
+            //const regex = /(--[a-zA-Z]+):(.*[a-zA-Z]+);/gm;
+            //const result = str.replace(regex, subst);
+            var html = document.querySelector("html");
+            var htmlstyles = window.getComputedStyle(html);
+            console.log(htmlstyles)
+
+
+            // gets the styles of it
+            var style = getComputedStyle(document.body)
+
+            let root = document.documentElement;
+            let computedStyles = getComputedStyle(root);
+
+
+            var cssvalcol = ":root{\n"
+
+            //console.log(`This is the value of headerfont: ${cssval}`);
+
+            cssvars.forEach(cssvar => {
+                //var css = css.replace(regex, subst);
+                var cssval = computedStyles.getPropertyValue(cssvar);
+
+                cssvalcol += `${cssvar}:${cssval};\n`
+                // console.log(cssvar, style.getPropertyValue(cssvar))
+            });
+
+            cssvalcol += "}"
+
+            //            console.log(cssvalcol)
+            var css = css.replace(regex, cssvalcol);
+
+
+            // create a new Blob with the HTML content
+            var blob = new Blob([css
+            ], { type: 'text/css' });
+
+            // create a link element
+            var link = document.createElement('a');
+
+            // set the href and download attributes of the link element
+            link.href = URL.createObjectURL(blob);
+            link.download = 'export.html';
+
+            // append the link element to the document
+            document.body.appendChild(link);
+
+            // click the link element to trigger the download
+            link.click();
+
+            // remove the link element
+            document.body.removeChild(link);
+        };
+        xhr.open('GET', 'style.css');
+
+        xhr.send();
+    });
+}
+
 // call the function when the DOM is ready
 document.addEventListener('DOMContentLoaded', function () {
     triggerExport('export-html', 'container');
+    exportcss('export-css', 'container');
+
 });
